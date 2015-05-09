@@ -56,3 +56,65 @@ print response.read()
 ```
 
 运行结果是完全一样的，只不过中间多了一个request对象，*推荐大家这么写，因为在构建请求时还需要加入好多内容，通过构建一个request，服务器响应请求得到应答，这样显得逻辑上清晰明确。*
+
+#### 4. POST和GET数据传送
+
+上面的程序演示了最基本的网页抓取，不过，现在大多数网站都是`动态网页`，需要你动态地传递参数给它，它做出对应的响应。所以，在访问时，我们需要传递数据给它。最常见的情况是什么？对了，就是`登录注册`的时候呀。
+数据传送分为`POST`和`GET`两种方式,最重要的区别是**GET方式是直接以链接形式访问，链接中包含了所有的参数**，当然如果包含了密码的话是一种不安全的选择，不过你可以直观地看到自己提交了什么内容。**POST则不会在网址上显示所有的参数**,不过如果你想直接查看提交了什么就不太方便了，大家可以酌情选择。
+
+#####POST方式：
+
+```python
+import urllib
+import urllib2
+ 
+values = {"username":"XXXXX","password":"XXXXX"}
+data = urllib.urlencode(values) 
+url = "https://passport.csdn.net/account/login?from=http://my.csdn.net/my/mycsdn"
+request = urllib2.Request(url,data)
+response = urllib2.urlopen(request)
+print response.read()
+```
+
+我们引入了urllib库，现在我们模拟登陆CSDN，当然上述代码可能登陆不进去，因为还要做一些设置头部header的工作，或者还有一些参数 没有设置全，还没有提及到在此就不写上去了，在此只是说明登录的原理。
+在此可以看到我们定义了1个字典，名字为values，参数设置了username 和 password
+然后利用`urllib.urlencode()`将字典编码，命名为data，在`urllib2.Request()`中传入 URL 和 data 参数。运行就可以实现登录。`response.read()`的储存内容就是登录后出现的页面内容。
+
+> 如下的字典定义方法也可成功。
+
+```python
+import urllib
+import urllib2
+ 
+values = {}
+values['username'] = "1016903103@qq.com"
+values['password'] = "XXXX"
+data = urllib.urlencode(values) 
+url = "http://passport.csdn.net/account/login?from=http://my.csdn.net/my/mycsdn"
+request = urllib2.Request(url,data)
+response = urllib2.urlopen(request)
+print response.read()
+```
+
+####GET方式：
+
+`GET`的使用方法是：把参数写到网址上面，直接构建一个带参数的URL出来即可。
+
+```python
+import urllib
+import urllib2
+ 
+values={}
+values['username'] = "1016903103@qq.com"
+values['password']="XXXX"
+data = urllib.urlencode(values) 
+url = "http://passport.csdn.net/account/login"
+geturl = url + "?"+data
+request = urllib2.Request(geturl)
+response = urllib2.urlopen(request)
+print response.read()
+```
+
+可以用`print geturl`来查看`geturl`加编码的参数
+
+
