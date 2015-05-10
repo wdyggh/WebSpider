@@ -79,3 +79,64 @@ HTTPError: 子类异常
 *503：服务出错 由于临时的服务器维护或者过载，服务器当前无法处理请求。这个状况是临时的，并且将在一段时间以后恢复.*
 
 - - -
+
+HTTPError实例产生后会有一个code属性，这就是是服务器发送的相关错误号。
+**因为urllib2可以为你处理重定向，也就是3开头的代号可以被处理，并且100-299范围的号码指示成功，所以你只能看到400-599的错误号码。**
+
+下面我们写一个例子来感受一下，捕获的异常是`HTTPError`，它会带有一个code属性，就是错误代号，另外我们又打印了`reason`属性，这是它的父类`URLError`的属性。
+
+```python
+import urllib2
+
+req = urllib2.Request('http://blog.csdn.net/cqcre')
+try:
+	urllib2.urlopen(req)
+expect urllib2.HTTPError, e:
+	print e.code
+	print e.reason
+```
+
+运行结果如下
+
+```bash
+403
+Forbidden
+```
+
+错误代号是403，错误原因是Forbidden，说明服务器禁止访问。
+
+我们知道，**HTTPError的父类是URLError**，根据编程经验，**父类的异常应当写到子类异常的后面**，如果子类捕获不到，那么可以捕获父类的异常，所以上述的代码可以这么改写
+
+```python
+import urllib2
+ 
+req = urllib2.Request('http://blog.csdn.net/cqcre')
+try:
+    urllib2.urlopen(req)
+except urllib2.HTTPError, e:
+    print e.code
+except urllib2.URLError, e:
+    print e.reason
+else:
+    print "OK"
+```
+
+如果捕获到了HTTPError，则输出code，不会再处理URLError异常。如果发生的不是HTTPError，则会去捕获URLError异常，输出错误原因。
+
+另外还可以加入 hasattr属性提前对属性进行判断，代码改写如下
+
+```python
+import urllib2
+ 
+req = urllib2.Request('http://blog.csdn.net/cqcre')
+try:
+    urllib2.urlopen(req)
+except urllib2.URLError, e:
+    if hasattr(e,"code"):
+        print e.code
+    if hasattr(e,"reason"):
+        print e.reason
+else:
+    print "OK"
+```
+
