@@ -14,7 +14,7 @@
 
 ![Python爬虫入门03_01.png](http://7xifyp.com1.z0.glb.clouddn.com/Python爬虫入门03_01.png)
 
-拆分这些请求，我们只看一**第一个请求**，你可以看到，有个**Request URL**，还有**headers**，下面便是**response**，图片显示得不全，小伙伴们可以亲身实验一下。那么这个头中包含了许许多多是信息，有文件编码啦，压缩方式啦，请求的agent啦等等。
+拆分这些请求，我们只看**第一个请求**，你可以看到，有个**Request URL**，还有**headers**，下面便是**response**，图片显示得不全，小伙伴们可以亲身实验一下。那么这个头中包含了许许多多是信息，有文件编码啦，压缩方式啦，请求的agent啦等等。
 
 其中，**agent**就是请求的身份，如果没有写入请求身份，那么服务器不一定会响应，所以可以在headers中设置agent,例如下面的例子，这个例子只是说明了怎样设置的headers，小伙伴们看一下设置格式就好。
 
@@ -31,4 +31,23 @@ request = urllib2.Request(url, data, headers)
 response = urllib2.urlopen(request)  
 page = response.read()
 ```
+
+这样，我们设置了一个headers，在构建request时传入，在请求时，就加入了headers传送，服务器若识别了是浏览器发来的请求，就会得到响应。
+另外，我们还有对付”反盗链”的方式，对付防盗链，服务器会识别headers中的referer是不是它自己，如果不是，有的服务器不会响应，所以我们还可以在headers中加入referer
+例如我们可以构建下面的headers:`User-Agent` `Referer`
+
+```python
+headers = { 'User-Agent' : 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)','Referer':'http://www.zhihu.com/articles' }
+```
+
+把以上构建的 `headers` 传入 `Request`参数里就能对付防盗链了.
+另外`headers`的一些属性:
+
+*User-Agent : 有些服务器或 Proxy 会通过该值来判断是否是浏览器发出的请求
+Content-Type : 在使用 REST 接口时，服务器会检查该值，用来确定 HTTP Body 中的内容该怎样解析。
+application/xml ： 在 XML RPC，如 RESTful/SOAP 调用时使用
+application/json ： 在 JSON RPC 调用时使用
+application/x-www-form-urlencoded ： 浏览器提交 Web 表单时使用
+在使用服务器提供的 RESTful 或 SOAP 服务时， Content-Type 设置错误会导致服务器拒绝服务*
+
 
