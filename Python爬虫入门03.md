@@ -1,4 +1,6 @@
-###Python爬虫入门03
+###Python爬虫入门03 Urllib库的高级用法
+
+`webspider02.py`
 
 * 设置Headers
 * Proxy（代理）的设置
@@ -96,3 +98,26 @@ http协议有六种请求方法，`get`,`head`,`put`,`delete`,`post`,`options`�
 
 *DELETE：删除某一个资源。基本上这个也很少见，不过还是有一些地方比如amazon的S3云服务里面就用的这个方法来删除资源。*
 
+如果要使用 HTTP PUT 和 DELETE ，只能使用比较低层的 httplib 库。虽然如此，我们还是能通过下面的方式，使 urllib2 能够发出 PUT 或DELETE 的请求，不过用的次数的确是少，在这里提一下。
+
+```python
+import urllib2
+request = urllib2.Request(uri, data=data)
+request.get_method = lambda: 'PUT' 		# or 'DELETE'
+response = urllib2.urlopen(request)
+```
+
+#### 5. 使用DebugLog
+
+可以通过下面的方法把 `Debug Log` 打开，这样收发包的内容就会在屏幕上打印出来，方便调试，这个也不太常用，仅提一下
+
+```python
+import urllib2
+httpHandler = urllib2.HTTPHandler(debuglevel=1)
+httpsHandler = urllib2.HTTPSHandler(debuglevel=1)
+opener = urllib2.build_opener(httpHandler, httpsHandler)
+urllib2.install_opener(opener)
+response = urllib2.urlopen('http://www.baidu.com')
+```
+
+*以上便是一部分高级特性，前三个是重要内容，在后面，还有cookies的设置还有异常的处理，小伙伴们加油！*

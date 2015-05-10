@@ -1,4 +1,4 @@
-###Python爬虫入门02
+###Python爬虫入门02 Urllib库的基本使用
 
 `webspider01.py`
 
