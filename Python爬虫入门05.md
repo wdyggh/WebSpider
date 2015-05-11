@@ -113,7 +113,7 @@ print response.read()
 
 ##### 4）利用cookie模拟网站登录
 
-下面我们以/'*我们学校的教育系统为例*/'，利用cookie实现模拟登录，并将cookie信息保存到文本文件中，来感受一下cookie大法吧！
+下面我们以\' *我们学校的教育系统为例* \'，利用cookie实现模拟登录，并将cookie信息保存到文本文件中，来感受一下cookie大法吧！
 
 ```python
 import urllib
