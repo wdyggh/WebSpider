@@ -132,6 +132,7 @@ pattern = re.compile(r'hello')
 
 ![Python爬虫入门06_01.JPG](http://7xifyp.com1.z0.glb.clouddn.com/Python爬虫入门06_01.JPG)
 
+
 	匹配分析
 
 	1.第一个匹配，pattern正则表达式为`hello`，我们匹配的目标字符串string也为hello，从头至尾完全匹配，匹配成功。      
