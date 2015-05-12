@@ -130,7 +130,7 @@ pattern = re.compile(r'hello')
 
 	运行结果：
 
-![Python爬虫入门06_01.JPG](http://7xifyp.com1.z0.glb.clouddn.com/Python爬虫入门06_01.JPG)
+	![Python爬虫入门06_01.JPG](http://7xifyp.com1.z0.glb.clouddn.com/Python爬虫入门06_01.JPG)    
 
 
 	匹配分析
