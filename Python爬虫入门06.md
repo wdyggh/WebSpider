@@ -66,12 +66,62 @@ pattern = re.compile(r'hello')
 
 参数flag是匹配模式，取值可以使用按位或运算符’|’表示同时生效，比如re.I | re.M 可选值有：
 
-> •re.I(全拼：IGNORECASE): 忽略大小写（括号内是完整写法，下同）    
-> •re.M(全拼：MULTILINE): 多行模式，改变'^'和'$'的行为（参见上图）     
-> •re.S(全拼：DOTALL): 点任意匹配模式，改变'.'的行为     
-> •re.L(全拼：LOCALE): 使预定字符类 \w \W \b \B \s \S 取决于当前区域设定   
-> •re.U(全拼：UNICODE): 使预定字符类 \w \W \b \B \s \S \d \D 取决于unicode定义的字符属性        
-> •re.X(全拼：VERBOSE): 详细模式。这个模式下正则表达式可以是多行，忽略空白字符，并可以加入注释。     
+> re.I(全拼：IGNORECASE): 忽略大小写（括号内是完整写法，下同）    
+> re.M(全拼：MULTILINE): 多行模式，改变'^'和'$'的行为（参见上图）     
+> re.S(全拼：DOTALL): 点任意匹配模式，改变'.'的行为     
+> re.L(全拼：LOCALE): 使预定字符类 \w \W \b \B \s \S 取决于当前区域设定   
+> re.U(全拼：UNICODE): 使预定字符类 \w \W \b \B \s \S \d \D 取决于unicode定义的字符属性        
+> re.X(全拼：VERBOSE): 详细模式。这个模式下正则表达式可以是多行，忽略空白字符，并可以加入注释。     
 
+在刚才所说的另外几个方法例如 re.match 里我们就需要用到这个 pattern 了，下面我们一一介绍。
 
+*注：以下七个方法中的flags同样是代表匹配模式的意思，如果在pattern生成时已经指明了flags，那么在下面的方法中就不需要传入这个参数了。*
 
+*（1）re.match(pattern, string[, flags])      
+		这个方法将会从string（我们要匹配的字符串）的开头开始，尝试匹配pattern，一直向后匹配，如果遇到无法匹配的字符，立即返回 None，如果匹配未结束已经到达string的末尾，也会返回None。两个结果均表示匹配失败，否则匹配pattern成功，同时匹配终止，不再对 string向后匹配。下面我们通过一个例子理解一下    
+
+		```python
+		__author__ = 'CQC'
+		# -*- coding: utf-8 -*-
+		 
+		#导入re模块
+		import re
+		 
+		# 将正则表达式编译成Pattern对象，注意hello前面的r的意思是“原生字符串”
+		pattern = re.compile(r'hello')
+		 
+		# 使用re.match匹配文本，获得匹配结果，无法匹配时将返回None
+		result1 = re.match(pattern,'hello')
+		result2 = re.match(pattern,'helloo CQC!')
+		result3 = re.match(pattern,'helo CQC!')
+		result4 = re.match(pattern,'hello CQC!')
+		 
+		#如果1匹配成功
+		if result1:
+		    # 使用Match获得分组信息
+		    print result1.group()
+		else:
+		    print '1匹配失败！'
+		 
+		#如果2匹配成功
+		if result2:
+		    # 使用Match获得分组信息
+		    print result2.group()
+		else:
+		    print '2匹配失败！'
+		 
+		#如果3匹配成功
+		if result3:
+		    # 使用Match获得分组信息
+		    print result3.group()
+		else:
+		    print '3匹配失败！'
+		 
+		#如果4匹配成功
+		if result4:
+		    # 使用Match获得分组信息
+		    print result4.group()
+		else:
+		    print '4匹配失败！'
+
+		```
