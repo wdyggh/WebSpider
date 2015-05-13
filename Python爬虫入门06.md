@@ -207,3 +207,5 @@ pattern = re.compile(r'hello')
 	# m.span(2): (6, 11)
 	# m.expand(r'\2 \1\3'): world hello!
 	```
+
+* ##### 2) re.search(pattern, string[, flags])      
