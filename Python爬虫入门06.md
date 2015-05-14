@@ -174,8 +174,7 @@ pattern = re.compile(r'hello')
 	#一个简单的match实例
 	 
 	import re
-	# 匹配如下内容：单词+空格+单词+任意字符
-	m = re.match(r'(\w+) (\w+)(?P.*)', 'hello world!')
+	m = re.match(r'(\w+) (\w+)(?P<sign>.*)', 'hello world!')
 	 
 	print "m.string:", m.string
 	print "m.re:", m.re
@@ -183,18 +182,18 @@ pattern = re.compile(r'hello')
 	print "m.endpos:", m.endpos
 	print "m.lastindex:", m.lastindex
 	print "m.lastgroup:", m.lastgroup
-	print "m.group():", m.group()
+	 
 	print "m.group(1,2):", m.group(1, 2)
 	print "m.groups():", m.groups()
 	print "m.groupdict():", m.groupdict()
 	print "m.start(2):", m.start(2)
 	print "m.end(2):", m.end(2)
 	print "m.span(2):", m.span(2)
-	print r"m.expand(r'\g \g\g'):", m.expand(r'\2 \1\3')
+	print r"m.expand(r'\2 \1\3'):", m.expand(r'\2 \1\3')
 	 
 	### output ###
 	# m.string: hello world!
-	# m.re: 
+	# m.re: <_sre.SRE_Pattern object at 0x016E1A38>
 	# m.pos: 0
 	# m.endpos: 12
 	# m.lastindex: 3
@@ -209,3 +208,116 @@ pattern = re.compile(r'hello')
 	```
 
 * ##### 2) re.search(pattern, string[, flags])      
+
+	`search` 方法与 `match` 方法极其类似，区别在于**match()函数只检测re是不是在string的开始位置(0位置)匹配**，**search()会扫描整个string查找匹配**，match（）只有在0位置匹配成功的话才有返回，如果不是开始位置匹配成功的话，match()就返回None。同样，search方法的返回对象同样match()返回对象的方法和属性。     
+	```python
+	#导入re模块
+	import re
+	 
+	# 将正则表达式编译成Pattern对象
+	pattern = re.compile(r'world')
+	# 使用search()查找匹配的子串，不存在能匹配的子串时将返回None
+	# 这个例子中使用match()无法成功匹配
+	match = re.search(pattern,'hello world!')
+	if match:
+	    # 使用Match获得分组信息
+	    print match.group()
+	### 输出 ###
+	# world
+	```
+
+* ##### 3) re.split(pattern, string[, maxsplit])      
+
+	按照能够匹配的子串将string分割后返回列表。maxsplit用于指定最大分割次数，不指定将全部分割。我们通过下面的例子感受一下。    
+
+	```python
+	import re
+	 
+	pattern = re.compile(r'\d+')
+	print re.split(pattern,'one1two2three3four4')
+	 
+	### 输出 ###
+	# ['one', 'two', 'three', 'four', '']
+	```
+
+* ##### 4) re.findall(pattern, string[, flags])     
+
+	搜索string，以列表形式返回全部能匹配的**子串**。我们通过这个例子来感受一下    
+	
+	```python
+	import re
+	 
+	pattern = re.compile(r'\d+')
+	print re.findall(pattern,'one1two2three3four4')
+	 
+	### 输出 ###
+	# ['1', '2', '3', '4']
+	```
+
+* ##### 5) re.finditer(pattern, string[, flags])     
+
+	搜索string，返回一个顺序访问每一个匹配结果（Match对象）的迭代器。我们通过下面的例子来感受一下    
+	
+	```python
+	import re
+ 
+	pattern = re.compile(r'\d+')
+	for m in re.finditer(pattern,'one1two2three3four4'):
+	    print m.group(),
+	 
+	### 输出 ###
+	# 1 2 3 4
+	```
+
+* ##### 6) re.sub(pattern, repl, string[, count])     
+
+	使用repl替换string中每一个匹配的子串后返回替换后的字符串。
+	* 当repl是一个字符串时，可以使用\id或\g、\g引用分组，但不能使用编号0。
+	* 当repl是一个方法时，这个方法应当只接受一个参数（Match对象），并返回一个字符串用于替换（返回的字符串中不能再引用分组）。
+	count用于指定最多替换次数，不指定时全部替换。    
+	
+	```python
+	import re
+
+	pattern = re.compile(r'(\w+) (\w+)')
+	s = 'i say, hello world!'
+	 
+	print re.sub(pattern,r'\2 \1', s)
+	 
+	def func(m):
+	    return m.group(1).title() + ' ' + m.group(2).title()
+	 
+	print re.sub(pattern,func, s)
+	 
+	### output ###
+	# say i, world hello!
+	# I Say, Hello World!
+	```
+
+* ##### 7) re.subn(pattern, repl, string[, count])     
+
+	返回 (sub(repl, string[, count]), 替换次数)。    
+	
+	```python
+	import re
+	 
+	pattern = re.compile(r'\d+')
+	print re.findall(pattern,'one1two2three3four4')
+	 
+	### 输出 ###
+	# ['1', '2', '3', '4']
+	```
+
+#### 5. Python Re模块的另一种使用方式
+
+在上面我们介绍了7个工具方法，例如match，search等等，不过调用方式都是 `re.match，re.search` 的方式，其实还有另外一种调用方式，可以通过 `pattern.match，pattern.search` 调用，这样 调用便不用将pattern作为第一个参数传入了，大家想怎样调用皆可。
+
+```python
+match(string[, pos[, endpos]]) | re.match(pattern, string[, flags])
+search(string[, pos[, endpos]]) | re.search(pattern, string[, flags])
+split(string[, maxsplit]) | re.split(pattern, string[, maxsplit])
+findall(string[, pos[, endpos]]) | re.findall(pattern, string[, flags])
+finditer(string[, pos[, endpos]]) | re.finditer(pattern, string[, flags])
+sub(repl, string[, count]) | re.sub(pattern, repl, string[, count])
+subn(repl, string[, count]) |re.sub(pattern, repl, string[, count])
+```
