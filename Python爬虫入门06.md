@@ -232,7 +232,7 @@ pattern = re.compile(r'hello')
 
 	```python
 	import re
-	 
+
 	pattern = re.compile(r'\d+')
 	print re.split(pattern,'one1two2three3four4')
 	 
@@ -321,3 +321,4 @@ finditer(string[, pos[, endpos]]) | re.finditer(pattern, string[, flags])
 sub(repl, string[, count]) | re.sub(pattern, repl, string[, count])
 subn(repl, string[, count]) |re.sub(pattern, repl, string[, count])
 ```
+
