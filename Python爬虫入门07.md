@@ -323,6 +323,120 @@ and they lived at the bottom of a well.</p>
 
 ##### 2) 所有子孙节点
 
+**知识点：.descendants 属性**
+
+`.contents` 和 `.children` 属性仅包含 `tag` 的直接子节点，`.descendants` **属性可以对所有tag的子孙节点进行递归循环**，和 children类似，我们也需要遍历获取其中的内容。
+
+```python
+for child in soup.descendants
+    print child
+```
+
+运行结果如下，可以发现，**所有的节点都被打印出来了，先生最外层的 HTML标签，其次从 head 标签一个个剥离，以此类推。**
+
+```html
+<html><head><title>The Dormouse's story</title></head>
+<body>
+<p class="title" name="dromouse"><b>The Dormouse's story</b></p>
+<p class="story">Once upon a time there were three little sisters; and their names were
+<a class="sister" href="http://example.com/elsie" id="link1"><!-- Elsie --></a>,
+<a class="sister" href="http://example.com/lacie" id="link2">Lacie</a> and
+<a class="sister" href="http://example.com/tillie" id="link3">Tillie</a>;
+and they lived at the bottom of a well.</p>
+<p class="story">...</p>
+</body></html>
+<head><title>The Dormouse's story</title></head>
+<title>The Dormouse's story</title>
+The Dormouse's story
+ 
+<body>
+<p class="title" name="dromouse"><b>The Dormouse's story</b></p>
+<p class="story">Once upon a time there were three little sisters; and their names were
+<a class="sister" href="http://example.com/elsie" id="link1"><!-- Elsie --></a>,
+<a class="sister" href="http://example.com/lacie" id="link2">Lacie</a> and
+<a class="sister" href="http://example.com/tillie" id="link3">Tillie</a>;
+and they lived at the bottom of a well.</p>
+<p class="story">...</p>
+</body>
+ 
+<p class="title" name="dromouse"><b>The Dormouse's story</b></p>
+<b>The Dormouse's story</b>
+The Dormouse's story
+ 
+<p class="story">Once upon a time there were three little sisters; and their names were
+<a class="sister" href="http://example.com/elsie" id="link1"><!-- Elsie --></a>,
+<a class="sister" href="http://example.com/lacie" id="link2">Lacie</a> and
+<a class="sister" href="http://example.com/tillie" id="link3">Tillie</a>;
+and they lived at the bottom of a well.</p>
+Once upon a time there were three little sisters; and their names were
+ 
+<a class="sister" href="http://example.com/elsie" id="link1"><!-- Elsie --></a>
+ Elsie 
+,
+ 
+<a class="sister" href="http://example.com/lacie" id="link2">Lacie</a>
+Lacie
+ and
+ 
+<a class="sister" href="http://example.com/tillie" id="link3">Tillie</a>
+Tillie
+;
+and they lived at the bottom of a well.
+ 
+<p class="story">...</p>
+```
+
+##### 3) 节点内容
+
+**知识点：.string 属性**
+
+如果tag只有一个 NavigableString 类型子节点,那么这个tag可以使用 .string 得到子节点。如果一个tag仅有一个子节点,那么这个tag也可以使用 .string 方法,输出结果与当前唯一子节点的 .string 结果相同。
+
+**通俗点说就是：如果一个标签里面没有标签了，那么 .string 就会返回标签里面的内容。如果标签里面只有唯一的一个标签了，那么 .string 也会返回最里面的内容。例如**
+
+```python
+print soup.head.string
+#The Dormouse's story
+print soup.title.string
+#The Dormouse's story
+```
+
+如果 **tag包含了多个子节点,tag就无法确定**，string 方法应该调用哪个子节点的内容, .string 的输出结果是 None
+
+```python
+print soup.html.string
+#None
+```
+
+##### 4) 多个内容
+
+**知识点： .strings .stripped_strings 属性**
+
+*.string*
+
+获取多个内容，不过需要遍历获取，比如下面的例子
+
+```python
+for string in soup.strings:
+    print(repr(string))
+    # u"The Dormouse's story"
+    # u'\n\n'
+    # u"The Dormouse's story"
+    # u'\n\n'
+    # u'Once upon a time there were three little sisters; and their names were\n'
+    # u'Elsie'
+    # u',\n'
+    # u'Lacie'
+    # u' and\n'
+    # u'Tillie'
+    # u';\nand they lived at the bottom of a well.'
+    # u'\n\n'
+    # u'...'
+    # u'\n'
+```
+
+
+
 
 
 
