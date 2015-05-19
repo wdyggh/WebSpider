@@ -13,3 +13,6 @@
 - - -
 
 [Python爬虫实战01.md](Python爬虫实战01.md) 爬取糗事百科段子    
+
+
+原文地址：`http://python.jobbole.com/81332/`
