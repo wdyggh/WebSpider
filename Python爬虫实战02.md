@@ -156,7 +156,7 @@ class Tool:
     replaceLine = re.compile('<tr>|<div>|</div>|</p>')
     replaceTD = re.compile('<td>')
     replacePara = re.compile('<p.*?>')
-    replaceBR = re.compile('|')
+    replaceBR = re.compile('<br>')
     removeExtraTag = re.compile('<.*?>')
 
     def replace(self,x):
