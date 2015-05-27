@@ -133,7 +133,7 @@ class Spider:
         items = re.findall(pattern,page)
         contents = []
         for item in items:
-            print item[0],item[1],item[2],item[3],item[4]
+            # print item[0],item[1],item[2],item[3],item[4]
             contents.append([item[0].strip(),item[1].strip(),item[2].strip(),item[3].strip(),item[4].strip()])
 
         return contents
@@ -250,3 +250,15 @@ spider = Spider()
 spider.savePagesInfo(1,3)
 # spider.getContents(1)
 ```
+
+* spider.savePagesInfo(self,start,end)   
+* self.savePageInfo(self,pageIndex)    
+    1. 获取正文 self.getContents(pageIndex) > self.getPage(self,pageIndex) > 储存 contents   
+    2. for item in contents:   
+        1. 获取MM个人详情页面 self.getDetailPage(self,infoURL)   
+        2. 获取个人简介 self.getBrief(detailPage)   
+        3. 获取所有图片列表 self.getAllImg(detailPage)   
+        4. 创建新目录 self.mkdir(self,path)   
+        5. 保存个人简介 self.saveBrief(self,content,name)  
+        6. 保存头像 self.saveIcon(self,iconURL,name)  
+        7. 保存多张写真图片 self.saveImgs(self,images,name)  
