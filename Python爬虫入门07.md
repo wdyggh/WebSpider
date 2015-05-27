@@ -60,7 +60,7 @@ Beautiful Soup 3 目前已经停止开发，推荐在现在的项目中使用**B
 首先导入 bs4 库
 
 ```python
-form bs4 inport BeautifulSoup
+form bs4 import BeautifulSoup
 ```
 
 * 创建 beautifulsoup 对象
