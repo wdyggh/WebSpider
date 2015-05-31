@@ -15,6 +15,11 @@
 [Python爬虫实战01.md](Python爬虫实战01.md) 爬取糗事百科段子    
 [Python爬虫实战02.md](Python爬虫实战02.md) 爬取百度贴吧帖子    
 [Python爬虫实战03.md](Python爬虫实战03.md) 登录大学官网    
+[Python爬虫实战04.md](Python爬虫实战04.md) 抓取淘宝MM照片    
 
+- - -
+
+[scrapy入门01.md](scrapy入门01.md)     
 
 原文地址：`http://python.jobbole.com/81332/`
+ 
