@@ -44,8 +44,8 @@ opener = urllib2.build_opener(handler)
 response = opener.open('http://www.baidu.com')
 
 for item in cookie:
-    print 'Name = '+item.name
-    print 'Value = '+item.value
+	print 'Name = '+item.name
+	print 'Value = '+item.value
 
 ```
 
@@ -125,9 +125,9 @@ filename = 'cookie.txt'
 cookie = cookielib.MozillaCookieJar(filename)
 opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookie))
 postdata = urllib.urlencode({
-            'stuid':'123456',
-            'pwd':'123456'
-        })
+			'stuid':'123456',
+			'pwd':'123456'
+		})
 #登录教务系统的URL
 loginUrl = 'http://jwxt.sdu.edu.cn:7890/pls/wwwbks/bks_login2.login'
 #模拟登录，并把cookie保存到变量
