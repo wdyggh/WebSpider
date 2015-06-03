@@ -117,12 +117,12 @@ Scrapy提供了两种类型的命令。一种必须在Scrapy项目中运行(针�
 
 **项目(Project-only)命令:**
 
-* crawl
+* [crawl](#crawl)
 * check
 * list
 * edit
 * parse
-* genspider
+* [genspider](#genspider)
 * deploy
 * bench
 
@@ -138,6 +138,54 @@ Scrapy提供了两种类型的命令。一种必须在Scrapy项目中运行(针�
 $ scrapy startproject myproject
 ```
 [回到目录](#index) 
+
+<a name="genspider"></a>  
+##### genspider
+
+语法: `scrapy genspider [-t template] <name> <domain>`  
+是否需要项目: `yes`  
+在当前项目中创建spider。  
+这仅仅是创建spider的一种快捷方法。该方法可以使用提前定义好的模板来生成spider。您也可以自己创建spider的源码文件。  
+例子:  
+
+```bash
+$ scrapy genspider -l
+Available templates:
+  basic
+  crawl
+  csvfeed
+  xmlfeed
+
+$ scrapy genspider -d basic
+import scrapy
+
+class $classname(scrapy.Spider):
+    name = "$name"
+    allowed_domains = ["$domain"]
+    start_urls = (
+        'http://www.$domain/',
+        )
+
+    def parse(self, response):
+        pass
+
+$ scrapy genspider -t basic example example.com
+Created spider 'example' using template 'basic' in module:
+  mybot.spiders.example
+```
+
+<a name="crawl"></a>  
+##### crawl
+语法: scrapy crawl <spider>
+是否需要项目: yes
+使用spider进行爬取。
+
+例子:
+
+```bash
+$ scrapy crawl myspider
+[ ... myspider starts crawling ... ]
+```
 
 
 
