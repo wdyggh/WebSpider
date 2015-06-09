@@ -1,17 +1,14 @@
 ###scrapy入门03 命令行工具(Command line tools)
 
-* 1
-* 2
-* 3
-* 4
-* 5
-* 6
+* 默认的Scrapy项目结构
+* 使用 `scrapy` 工具
+* 可用的工具命令(tool commands)
 
 Scrapy是通过 scrapy 命令行工具进行控制的。 这里我们称之为 `“Scrapy tool”` 以用来和子命令进行区分。 对于子命令，我们称为 “command” 或者 “Scrapy commands”。
 
 Scrapy tool 针对不同的目的提供了多个命令，每个命令支持不同的参数和选项。
 
-#### 默认的Scrapy项目结构
+#### 1. 默认的Scrapy项目结构
 
 在开始对命令行工具以及子命令的探索前，让我们首先了解一下Scrapy的项目的目录结构。
 
@@ -38,7 +35,7 @@ scrapy.cfg 存放的目录被认为是 项目的根目录 。该文件中包含p
 default = myproject.settings
 ```
 
-#### 使用 `scrapy` 工具
+#### 2. 使用 `scrapy` 工具
 
 您可以以无参数的方式启动Scrapy工具。该命令将会给出一些使用帮助以及可用的命令:
 
@@ -108,23 +105,23 @@ Scrapy提供了两种类型的命令。一种必须在Scrapy项目中运行(针�
 **全局命令:**
 
 * [startproject](#startproject)
-* settings
-* runspider
-* shell
-* fetch
-* view
-* version
+* [settings](#settings)
+* [runspider](#runspider)
+* [shell](#shell)
+* [fetch](#fetch)
+* [view](#view)
+* [version](#version)
 
 **项目(Project-only)命令:**
 
 * [crawl](#crawl)
-* check
-* list
-* edit
-* parse
+* [check](#check)
+* [list](#list)
+* [edit](#edit)
+* [parse](#parse)
 * [genspider](#genspider)
-* deploy
-* bench
+* [deploy](#deploy)
+* [bench](#bench)
 
 <a name="startproject"></a>  
 ##### startproject
@@ -173,37 +170,226 @@ $ scrapy genspider -t basic example example.com
 Created spider 'example' using template 'basic' in module:
   mybot.spiders.example
 ```
+[回到目录](#index) 
 
 <a name="crawl"></a>  
 ##### crawl
-语法: scrapy crawl <spider>
-是否需要项目: yes
-使用spider进行爬取。
 
-例子:
+语法: `scrapy crawl <spider>`  
+是否需要项目: yes  
+使用spider进行爬取。  
+例子:  
 
 ```bash
 $ scrapy crawl myspider
 [ ... myspider starts crawling ... ]
 ```
+[回到目录](#index) 
 
+<a name="check"></a>  
+##### check
 
+语法: `scrapy check [-l] <spider>`  
+是否需要项目: yes   
+运行contract检查。  
+例子:  
 
+```bash
+$ scrapy check -l
+first_spider
+  * parse
+  * parse_item
+second_spider
+  * parse
+  * parse_item
 
+$ scrapy check
+[FAILED] first_spider:parse_item
+>>> 'RetailPricex' field is missing
 
+[FAILED] first_spider:parse
+>>> Returned 92 requests, expected 0..4
+```
+[回到目录](#index) 
 
+<a name="list"></a>  
+##### list
 
+语法: `scrapy list`  
+是否需要项目: yes  
+列出当前项目中所有可用的spider。每行输出一个spider。  
+使用例子:  
 
+```bash
+$ scrapy list
+spider1
+spider2
+```
+[回到目录](#index) 
 
+<a name="edit"></a>  
+##### edit
 
+语法: `scrapy edit <spider>`  
+是否需要项目: yes  
+使用 EDITOR 中设定的编辑器编辑给定的spider  
+该命令仅仅是提供一个快捷方式。开发者可以自由选择其他工具或者IDE来编写调试spider。  
+例子:  
 
+```bash
+$ scrapy edit spider1
+```
+[回到目录](#index) 
 
+<a name="fetch"></a>  
+#### fetch
 
+语法: `scrapy fetch <url>`  
+是否需要项目: no  
+**使用Scrapy下载器(downloader)下载给定的URL，并将获取到的内容送到标准输出。**  
+该命令以spider下载页面的方式获取页面。例如，如果spider有 USER_AGENT 属性修改了 User Agent，该命令将会使用该属性。  
+因此，您可以使用该命令来查看spider如何获取某个特定页面。该命令如果非项目中运行则会使用默认Scrapy downloader设定。  
+例子:  
 
+```bash
+$ scrapy fetch --nolog http://www.example.com/some/page.html
+[ ... html content here ... ]
 
+$ scrapy fetch --nolog --headers http://www.example.com/
+{'Accept-Ranges': ['bytes'],
+ 'Age': ['1263   '],
+ 'Connection': ['close     '],
+ 'Content-Length': ['596'],
+ 'Content-Type': ['text/html; charset=UTF-8'],
+ 'Date': ['Wed, 18 Aug 2010 23:59:46 GMT'],
+ 'Etag': ['"573c1-254-48c9c87349680"'],
+ 'Last-Modified': ['Fri, 30 Jul 2010 15:30:18 GMT'],
+ 'Server': ['Apache/2.2.3 (CentOS)']}
+```
+[回到目录](#index) 
 
+<a name="view"></a>  
+#### view
+语法: `scrapy view <url>`  
+是否需要项目: no  
+在浏览器中打开给定的URL，并以Scrapy spider获取到的形式展现。 有些时候spider获取到的页面和普通用户看到的并不相同。 因此该命令可以用来检查spider所获取到的页面，并确认这是您所期望的。  
+例子:
 
+```bash
+$ scrapy view http://www.example.com/some/page.html
+[ ... browser starts ... ]
+```
+[回到目录](#index) 
 
+<a name="shell"></a>  
+#### shell
+语法: `scrapy shell [url]`  
+是否需要项目: no   
+以给定的URL(如果给出)或者空(没有给出URL)启动Scrapy shell。 查看 Scrapy终端(Scrapy shell) 获取更多信息。   
+例子:   
 
+```bash
+$ scrapy shell http://www.example.com/some/page.html
+[ ... scrapy shell starts ... ]
+```
+[回到目录](#index) 
 
+<a name="parse"></a>  
+#### parse
+语法: `scrapy parse <url> [options]`  
+是否需要项目: yes  
+获取给定的URL并使用相应的spider分析处理。如果您提供 --callback 选项，则使用spider的该方法处理，否则使用 parse 。  
 
+支持的选项:  
+--spider=SPIDER: 跳过自动检测spider并强制使用特定的spider  
+--a NAME=VALUE: 设置spider的参数(可能被重复)  
+--callback or -c: spider中用于解析返回(response)的回调函数  
+--pipelines: 在pipeline中处理item  
+--rules or -r: 使用 CrawlSpider 规则来发现用来解析返回(response)的回调函数  
+--noitems: 不显示爬取到的item  
+--nolinks: 不显示提取到的链接  
+--nocolour: 避免使用pygments对输出着色  
+--depth or -d: 指定跟进链接请求的层次数(默认: 1)  
+--verbose or -v: 显示每个请求的详细信息  
+例子:  
+
+```bash
+$ scrapy parse http://www.example.com/ -c parse_item
+[ ... scrapy log lines crawling example.com spider ... ]
+
+>>> STATUS DEPTH LEVEL 1 <<<
+# Scraped Items  ------------------------------------------------------------
+[{'name': u'Example item',
+ 'category': u'Furniture',
+ 'length': u'12 cm'}]
+
+# Requests  -----------------------------------------------------------------
+[]
+```
+[回到目录](#index) 
+
+<a name="settings"></a>  
+#### settings
+语法: `scrapy settings [options]`  
+是否需要项目: no  
+获取Scrapy的设定   
+在项目中运行时，该命令将会输出项目的设定值，否则输出Scrapy默认设定。  
+例子:  
+
+```bash
+$ scrapy settings --get BOT_NAME
+scrapybot
+$ scrapy settings --get DOWNLOAD_DELAY
+0
+```
+[回到目录](#index) 
+
+<a name="runspider"></a>  
+#### runspider
+语法: `scrapy runspider <spider_file.py>`  
+是否需要项目: no  
+在未 **创建项目的情况下，运行一个编写在Python文件中的spider**。  
+例子:  
+
+```bash
+$ scrapy runspider myspider.py
+[ ... spider starts crawling ... ]
+```
+[回到目录](#index) 
+
+<a name="version"></a>  
+#### version
+语法: `scrapy version [-v]`  
+是否需要项目: no  
+输出Scrapy版本。配合 -v 运行时，该命令同时输出Python, Twisted以及平台的信息，方便bug提交。  
+[回到目录](#index) 
+
+<a name="deploy"></a>  
+#### deploy
+0.11 新版功能.  
+语法: `scrapy deploy [ <target:project> | -l <target> | -L ]`  
+是否需要项目: yes  
+将项目部署到Scrapyd服务。查看 部署您的项目 。  
+[回到目录](#index) 
+
+<a name="bench"></a>  
+#### bench
+0.17 新版功能.  
+语法: `scrapy bench`  
+是否需要项目: no  
+运行benchmark测试。 Benchmarking 。  
+
+####自定义项目命令
+您也可以通过 COMMANDS_MODULE 来添加您自己的项目命令。您可以以 scrapy/commands 中Scrapy commands为例来了解如何实现您的命令。
+
+####COMMANDS_MODULE
+Default: '' (empty string)
+
+用于查找添加自定义Scrapy命令的模块。  
+例子:  
+
+```bash
+COMMANDS_MODULE = 'mybot.commands'
+```
+
+####讨论

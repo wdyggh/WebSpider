@@ -21,6 +21,7 @@
 
 [scrapy入门01.md](scrapy入门01.md) scrapy介绍    
 [scrapy入门02.md](scrapy入门02.md) scrapy入门介绍    
+[scrapy入门03.md](scrapy入门03.md) 命令行工具(Command line tools)    
 
 原文地址：`http://python.jobbole.com/81332/`
  
